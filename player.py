@@ -12,7 +12,7 @@ class Player:
         self.speed = PLAYER_SPEED  # швидкість ігрока
         self.direction = vec()     # напрям руху
         #############
-        self.on_dirty = False  # чи стоїть ігрок на чомусь
+        self.on_ground = False  # чи стоїть ігрок на чомусь
 
     def movement(self):
         keys = pressed_keys()
@@ -20,16 +20,21 @@ class Player:
 
         if keys[pg.K_a]: self.direction.x = -self.speed
         if keys[pg.K_d]: self.direction.x = self.speed
+        if keys[pg.K_SPACE] and self.on_dirty:
+            self.direction.y = -JUMP_POWER
+            self.on_ground = False
 
-        if not self.on_dirty:
+        if not self.on_ground:
             self.direction.y = min(self.direction.y + GRAVITY, MAX_VERTICAL_SPEED)
+        else: self.direction.y = 0
 
+        new_direction = self.game.world.check_collide(self._rect.copy(), self.direction)
         # print(self.direction)
-        offset = self.game.world.check_collide(self._rect.copy(), self.direction)
+        # print(self.on_ground)
+        self.on_ground = True if new_direction == self.direction else False
 
-        self.on_dirty = False if offset.y else True
-
-        self._rect.move_ip(offset)
+        self.direction = new_direction
+        self._rect.move_ip(self.direction)
 
     def update(self):
         self.movement()
