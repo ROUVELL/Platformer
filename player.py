@@ -1,6 +1,7 @@
 import pygame as pg
 
 from utills import vec, pressed_keys
+from weapon import Weapon
 from config import *
 
 
@@ -9,6 +10,8 @@ class Player:
         self.game = game
         self.name = pg.font.SysFont('arial', 14).render(name, True, 'white')
         self.rect = pg.Rect(PLAYER_POS, PLAYER_SIZE)
+        #############
+        self.gun = Weapon(self)
         #############
         self.speed = PLAYER_SPEED  # швидкість ігрока
         self.direction = vec()     # напрям руху
@@ -39,3 +42,4 @@ class Player:
         rect.centerx = self.rect.centerx
         rect.bottom = self.rect.top - 2
         sc.blit(self.name, rect)
+        self.gun.draw(sc)
