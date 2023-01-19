@@ -38,11 +38,11 @@ class World:
         def collide(target: pg.Rect, offset: vec) -> vec:
             if not offset: return vec()
             # horizontal
-            if target.move(offset.x, 0).collidelistall(self.tiles):
+            if target.move(offset.x, 0).collidelist(self.tiles):
                 new_offset = vec(offset.x - 1 if offset.x > 0 else offset.x + 1, offset.y)
                 return collide(target, new_offset)
             # vertical
-            if target.move(0, offset.y).collidelistall(self.tiles):
+            if target.move(0, offset.y).collidelist(self.tiles):
                 new_offset = vec(offset.x, offset.y - 1 if offset.y > 0 else offset.y + 1)
                 return collide(target, new_offset)
             return offset
