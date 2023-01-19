@@ -12,6 +12,10 @@ PLAYER_SPEED = 4
 JUMP_POWER = 15
 MAX_VERTICAL_SPEED = 15
 
+# camera
+# left, top, right, bottom
+CAMERA_RECT = (int(WIDTH * .2), int(HEIGHT * .1), int(WIDTH * .2), int(HEIGHT * .1))
+
 # map
 TILE_SIZE = 60
 
