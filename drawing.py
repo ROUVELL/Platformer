@@ -25,7 +25,7 @@ class Drawing:
         self.sc.blit(self.fps_font.render(fps, True, 'white'), (0, 0))
 
     def debug_info(self):
-        bullets = len(self.game.world.bullets)
+        bullets = self.game.hero.gun.curr_bullets
         text = f'Bullets: {bullets}'
         render = self.text_font.render(text, True, 'white')
         self.sc.blit(render, (WIDTH - 140, 0))
