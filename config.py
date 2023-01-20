@@ -11,6 +11,7 @@ PLAYER_POS = CENTER
 PLAYER_SPEED = 4
 JUMP_POWER = 15
 MAX_VERTICAL_SPEED = 15
+JUMP_DELEY = 1230
 
 # camera
 # left, top, right, bottom
@@ -21,3 +22,6 @@ TILE_SIZE = 60
 
 # world
 GRAVITY = .4
+
+# bullet
+AUTO_REMOVE_DELEY = 10000  # 10 sec
