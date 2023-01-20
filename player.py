@@ -1,7 +1,7 @@
 import pygame as pg
 
 from utills import vec, pressed_keys, pressed_mkeys, Timer
-from weapon import Pistol
+from weapon import Glock, Ak47
 from config import *
 
 
@@ -11,8 +11,8 @@ class Player:
         self.name = pg.font.SysFont('arial', 14).render(name, True, 'white')
         self.rect = pg.Rect(PLAYER_POS, PLAYER_SIZE)
         #############
-        self.gun = Pistol(self, self.game.world.bullets)
-        self.jump_timer = Timer(1300)
+        self.gun = Ak47(self, self.game.world.bullets)
+        self.jump_timer = Timer(JUMP_DELEY, activate=True)
         #############
         self.speed = PLAYER_SPEED  # швидкість ігрока
         self.direction = vec()     # напрям руху
@@ -22,19 +22,24 @@ class Player:
         self.gun.rect.move_ip(direction)
 
     def movement(self):
-        keys = pressed_keys()
         self.direction.x = 0
 
-        if keys[pg.K_a]: self.direction.x = -self.speed
-        if keys[pg.K_d]: self.direction.x = self.speed
-        if keys[pg.K_SPACE] and self.jump_timer:
-            self.jump_timer.activate()
-            self.direction.y = -JUMP_POWER
+        self.keyboard_control()
 
         self.direction.y = min(self.direction.y + GRAVITY, MAX_VERTICAL_SPEED)
         self.direction = self.game.world.check_collide(self.rect.copy(), self.direction)
 
         self.move(self.direction)
+
+    def keyboard_control(self):
+        keys = pressed_keys()
+        if keys[pg.K_a]: self.direction.x = -self.speed
+        if keys[pg.K_d]: self.direction.x = self.speed
+        if keys[pg.K_SPACE] and self.jump_timer:
+            self.jump_timer.activate()
+            self.direction.y = -JUMP_POWER
+        if keys[pg.K_r]:
+            self.gun.reload()
 
     def mouse_control(self):
         mkeys = pressed_mkeys()
