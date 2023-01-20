@@ -1,26 +1,14 @@
 import pygame as pg
 
-
-from utills import vec, all_events, Timer
-
-
-class Bullet:
-    def __init__(self, pos: vec, direction: vec):
-        self.rect = pg.Rect(pos, (12, 5))
-        self.direction = direction
-
-    def update(self):
-        self.rect.move_ip(self.direction)
-
-    def draw(self, sc: pg.Surface):
-        pg.draw.rect(sc, 'blue', self.rect, border_radius=3)
+from bullet import Bullet, PistolBullet
+from utills import vec, all_events, Timer, current_pos
 
 
 # Abstract class
 class Weapon:
-    SHOT_EVENT = pg.USEREVENT + 1
-
-    def __init__(self, user, group: list, rect: pg.Rect, shot_deley: int = 100, name: str = 'Gun'):
+    def __init__(self, user, group: list, size: tuple[int, int], shot_deley: int = 100, name: str = 'Gun'):
+        rect = pg.Rect((0, 0), size)
+        rect.center = user.rect.center
         self.rect = rect
         self.user = user
         self.bullet_group = group
@@ -30,17 +18,14 @@ class Weapon:
         ##########
         self.name = pg.font.SysFont('calibri', 12).render(name, True, 'white')
 
-    def shot(self, direction: vec):
+    def shot(self):
         if self.shot_timer.state:
-
-            pg.time.set_timer(self.SHOT_EVENT, self.shot_time_deley, 1)
-            self.bullet_group.append(Bullet(self.shot_pos, direction))
+            self.shot_timer.activate()
+            self.bullet_group.append(Bullet(self.bullet_group, self.shot_pos, vec(12, 5), vec(5, 0), type_='rect', color='blue'))
 
     def update(self):
+        self.shot_timer.update()
         self.shot_pos = vec(self.rect.right, self.rect.top)
-        if self.is_shot:
-            if all_events(self.SHOT_EVENT):
-                self.is_shot = False
 
     def draw(self, sc: pg.Surface):
         name_rect = self.name.get_rect()
@@ -48,11 +33,17 @@ class Weapon:
         name_rect.bottom = self.rect.top - 2
 
         pg.draw.rect(sc, 'green', self.rect, border_radius=3)
-        sc.blit(self.name, name_rect)
+        # sc.blit(self.name, name_rect)
 
 
 class Pistol(Weapon):
     def __init__(self, user, group: list):
-        topleft = (user.rect.right, user.rect.top + 5)
-        rect = pg.Rect(topleft, (20, 15))
-        super().__init__(user, group, rect, 100, 'Pistol')
+        super().__init__(user, group, (20, 15), 3, 'Pistol')
+
+    def shot(self):
+        if self.shot_timer.state:
+            self.shot_timer.activate()
+            size = vec(current_pos()) - self.shot_pos
+            direction = vec(size.x / size.length(), size.y / size.length())
+            direction *= 4
+            self.bullet_group.append(PistolBullet(self.bullet_group, self.shot_pos, direction))

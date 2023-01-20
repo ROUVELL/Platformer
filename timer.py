@@ -17,3 +17,6 @@ class Timer:
     def activate(self):
         self.last_update = get_ticks()
         self.state = False
+
+    def __bool__(self):
+        return self.state
