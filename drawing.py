@@ -5,34 +5,34 @@ from config import WIDTH, HEIGHT
 
 class Drawing:
     def __init__(self, game):
-        self.game = game
-        self.sc = game.sc
+        self._game = game
+        self._sc = game.sc
         ########
-        self.fps_font = pg.font.SysFont('calibri', 32)
-        self.text_font = pg.font.SysFont('calibri', 24)
+        self._fps_font = pg.font.SysFont('calibri', 32)
+        self._text_font = pg.font.SysFont('calibri', 24)
 
-    def bullets(self):
-        [bullet.draw(self.sc) for bullet in self.game.world.bullets]
+    def _bullets(self):
+        [bullet.draw(self._sc) for bullet in self._game.world.bullets]
 
-    def world(self):
-        self.game.world.draw(self.sc)
+    def _world(self):
+        self._game.world.draw(self._sc)
 
-    def player(self):
-        self.game.hero.draw(self.sc)
+    def _player(self):
+        self._game.hero.draw(self._sc)
 
-    def fps(self):
-        fps = f'{self.game.clock.get_fps() : .1f}'
-        self.sc.blit(self.fps_font.render(fps, True, 'white'), (0, 0))
+    def _fps(self):
+        fps = f'{self._game.clock.get_fps() : .1f}'
+        self._sc.blit(self._fps_font.render(fps, True, 'white'), (0, 0))
 
-    def debug_info(self):
-        bullets = self.game.hero.gun.curr_bullets
+    def _debug_info(self):
+        bullets = self._game.hero.gun.curr_bullets
         text = f'Bullets: {bullets}'
-        render = self.text_font.render(text, True, 'white')
-        self.sc.blit(render, (WIDTH - 140, 0))
+        render = self._text_font.render(text, True, 'white')
+        self._sc.blit(render, (WIDTH - 140, 0))
 
     def all(self):
-        self.bullets()
-        self.world()
-        self.player()
-        self.fps()
-        self.debug_info()
+        self._bullets()
+        self._world()
+        self._player()
+        self._fps()
+        self._debug_info()

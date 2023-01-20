@@ -1,37 +1,35 @@
 import pygame as pg
 
 from utills import vec
-from config import WIDTH, HEIGHT, CAMERA_RECT
+from config import CAMERA_RECT
 
 
 class Camera:
     def __init__(self, target, world):
-        l, t, r, b = CAMERA_RECT
-        w, h = WIDTH - l - r, HEIGHT - t - b
-        self.rect = pg.Rect(l, t, w, h)
-        self.target = target
-        self.world = world
+        self._rect = pg.Rect(CAMERA_RECT)
+        self._target = target
+        self._world = world
 
-    def get_offset(self) -> vec:
-        ox = oy = 0
-        camera, player = self.rect, self.target.rect
+    def _get_offset(self) -> vec:
+        offset = vec()
+        camera, player = self._rect, self._target.rect
 
         if camera.left > player.left:
-            ox = camera.left - player.left
+            offset.x = camera.left - player.left
         elif camera.right < player.right:
-            ox = camera.right - player.right
+            offset.x = camera.right - player.right
         if camera.top > player.top:
-            oy = camera.top - player.top
+            offset.y = camera.top - player.top
         elif camera.bottom < player.bottom:
-            oy = camera.bottom - player.bottom
-        return vec(ox, oy)
+            offset.y = camera.bottom - player.bottom
+        return offset
 
     def update(self):
-        if not self.rect.contains(self.target.rect):
-            offset = self.get_offset()
+        if not self._rect.contains(self._target.rect):
+            offset = self._get_offset()
 
-            self.target.move(offset)
-            self.world.offset(offset)
+            self._target.move(offset)
+            self._world.offset(offset)
 
     def draw(self, sc: pg.Surface):
-        pg.draw.rect(sc, 'orange', self.rect, 2)
+        pg.draw.rect(sc, 'orange', self._rect, 2)
