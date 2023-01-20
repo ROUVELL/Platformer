@@ -21,7 +21,7 @@ class Weapon:
     def shot(self):
         if self.shot_timer.state:
             self.shot_timer.activate()
-            self.bullet_group.append(Bullet(self.shot_pos, vec(12, 5), vec(5, 0), type_='rect', color='blue'))
+            self.bullet_group.append(Bullet(self.bullet_group, self.shot_pos, vec(12, 5), vec(5, 0), type_='rect', color='blue'))
 
     def update(self):
         self.shot_timer.update()
@@ -38,7 +38,7 @@ class Weapon:
 
 class Pistol(Weapon):
     def __init__(self, user, group: list):
-        super().__init__(user, group, (20, 15), 300, 'Pistol')
+        super().__init__(user, group, (20, 15), 3, 'Pistol')
 
     def shot(self):
         if self.shot_timer.state:
@@ -46,4 +46,4 @@ class Pistol(Weapon):
             size = vec(current_pos()) - self.shot_pos
             direction = vec(size.x / size.length(), size.y / size.length())
             direction *= 4
-            self.bullet_group.append(PistolBullet(self.shot_pos, direction))
+            self.bullet_group.append(PistolBullet(self.bullet_group, self.shot_pos, direction))

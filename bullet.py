@@ -1,18 +1,22 @@
 import pygame as pg
 
-from utills import vec
+from utills import vec, Timer
 
 
 # Abstract class
 class Bullet:
-    def __init__(self, pos: vec, size: vec, direction: vec, *, type_: str, color: str | tuple[int, int, int]):
+    def __init__(self, group: list, pos: vec, size: vec, direction: vec, *, type_: str, color: str | tuple[int, int, int]):
         assert type_ in ['rect', 'cicle'], f'Unknown type of bullet: {type_}!'
         assert direction, 'Direction can`t be (0, 0)!'
+        self.group = group
         self.pos = pos
         self.size = size
         self.direction = direction
         self.type_ = type_
         self.color = color
+        # Таймер самознищення
+        self.remove_timer = Timer(10000)  # 10 sec
+        self.remove_timer.activate()
 
     @property
     def rect(self):
@@ -22,6 +26,8 @@ class Bullet:
         self.pos += offset
 
     def update(self):
+        self.remove_timer.update()
+        if self.remove_timer: self.group.remove(self)
         self.move(self.direction)
 
     def draw(self, sc: pg.Surface):
@@ -32,5 +38,5 @@ class Bullet:
 
 
 class PistolBullet(Bullet):
-    def __init__(self, pos: vec, direction: vec):
-        super().__init__(pos, vec(4, 4), direction, type_='cicle', color='orange')
+    def __init__(self, group: list, pos: vec, direction: vec):
+        super().__init__(group, pos, vec(4, 4), direction, type_='cicle', color='orange')

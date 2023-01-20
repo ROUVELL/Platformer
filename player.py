@@ -27,7 +27,7 @@ class Player:
 
         if keys[pg.K_a]: self.direction.x = -self.speed
         if keys[pg.K_d]: self.direction.x = self.speed
-        if keys[pg.K_SPACE] and self.jump_timer.state:
+        if keys[pg.K_SPACE] and self.jump_timer:
             self.jump_timer.activate()
             self.direction.y = -JUMP_POWER
 

@@ -14,6 +14,7 @@ class Game:
         pg.init()
         self.sc = pg.display.set_mode(SCREEN, pg.NOFRAME)
         self.clock = pg.time.Clock()
+        # self.dt = 0.0
         ##########
         self.world = World()
         self.hero = Player(self)
@@ -22,7 +23,7 @@ class Game:
 
     def run(self):
         while True:
-            self.clock.tick(60)
+            self.clock.tick(0)  # TODO: delta time
             [exit() for event in all_events(pg.KEYUP) if event.key == pg.K_ESCAPE]
             self.sc.fill((20, 20, 20))
 
