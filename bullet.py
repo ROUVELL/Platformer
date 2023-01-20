@@ -1,6 +1,7 @@
 import pygame as pg
 
 from utills import vec, Timer
+from config import AUTO_REMOVE_DELEY
 
 
 # Abstract class
@@ -15,7 +16,7 @@ class Bullet:
         self.type_ = type_
         self.color = color
         # Таймер самознищення
-        self.remove_timer = Timer(10000, activate=True)  # 10 sec
+        self.remove_timer = Timer(AUTO_REMOVE_DELEY, activate=True)
 
     @property
     def rect(self):
