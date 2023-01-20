@@ -11,13 +11,17 @@ PLAYER_POS = CENTER
 PLAYER_SPEED = 4
 JUMP_POWER = 15
 MAX_VERTICAL_SPEED = 15
+JUMP_DELEY = 1230
 
 # camera
-# left, top, right, bottom
-CAMERA_RECT = (int(WIDTH * .2), int(HEIGHT * .1), int(WIDTH * .2), int(HEIGHT * .1))
+# left, top, width, height
+CAMERA_RECT = (WIDTH * .2, HEIGHT * .1, WIDTH - WIDTH * .4, HEIGHT - HEIGHT * .2)
 
 # map
 TILE_SIZE = 60
 
 # world
 GRAVITY = .4
+
+# bullet
+AUTO_REMOVE_DELEY = 10000  # 10 sec

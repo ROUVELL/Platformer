@@ -23,7 +23,7 @@ class Game:
 
     def run(self):
         while True:
-            self.clock.tick(0)  # TODO: delta time
+            self.clock.tick(60)  # TODO: delta time
             [exit() for event in all_events(pg.KEYUP) if event.key == pg.K_ESCAPE]
             self.sc.fill((20, 20, 20))
 
