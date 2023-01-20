@@ -15,8 +15,8 @@ class Game:
         self.sc = pg.display.set_mode(SCREEN, pg.NOFRAME)
         self.clock = pg.time.Clock()
         ##########
-        self.hero = Player(self)
         self.world = World()
+        self.hero = Player(self)
         self.camera = Camera(self.hero, self.world)
         self.draw = Drawing(self)
 
@@ -28,6 +28,7 @@ class Game:
 
             self.hero.update()
             self.camera.update()
+            self.world.update()
 
             self.draw.all()
             # self.camera.draw(self.sc)
