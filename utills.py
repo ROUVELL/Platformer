@@ -1,5 +1,7 @@
 import pygame as pg
 
+from timer import Timer
+
 
 vec = pg.Vector2
 
