@@ -1,6 +1,6 @@
 import pygame as pg
 
-from utills import vec, pressed_keys, pressed_mkeys
+from utills import vec, pressed_keys, pressed_mkeys, Timer
 from weapon import Pistol
 from config import *
 
@@ -12,11 +12,10 @@ class Player:
         self.rect = pg.Rect(PLAYER_POS, PLAYER_SIZE)
         #############
         self.gun = Pistol(self, self.game.world.bullets)
+        self.jump_timer = Timer(1300)
         #############
         self.speed = PLAYER_SPEED  # швидкість ігрока
         self.direction = vec()     # напрям руху
-        #############
-        # self.on_ground = False  # чи стоїть ігрок на чомусь
 
     def move(self, direction: vec):
         self.rect.move_ip(direction)
@@ -26,23 +25,23 @@ class Player:
         keys = pressed_keys()
         self.direction.x = 0
 
-        if keys[pg.K_a]:     self.direction.x = -self.speed
-        if keys[pg.K_d]:     self.direction.x = self.speed
-        if keys[pg.K_SPACE]: self.direction.y = -JUMP_POWER
-        # TODO: Нескінченні прижки
+        if keys[pg.K_a]: self.direction.x = -self.speed
+        if keys[pg.K_d]: self.direction.x = self.speed
+        if keys[pg.K_SPACE] and self.jump_timer.state:
+            self.jump_timer.activate()
+            self.direction.y = -JUMP_POWER
 
         self.direction.y = min(self.direction.y + GRAVITY, MAX_VERTICAL_SPEED)
-
         self.direction = self.game.world.check_collide(self.rect.copy(), self.direction)
 
         self.move(self.direction)
 
     def mouse_control(self):
         mkeys = pressed_mkeys()
-        if mkeys[0]:
-            self.gun.shot(vec(5, 0))
+        if mkeys[0]: self.gun.shot()
 
     def update(self):
+        self.jump_timer.update()
         self.gun.update()
         self.movement()
         self.mouse_control()
