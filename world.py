@@ -52,7 +52,7 @@ class World:
 
     def offset(self, offset: vec):
         [rect.move_ip(offset) for rect in self.tiles]
-        [bullet.rect.move_ip(offset) for bullet in self.bullets]
+        [bullet.move(offset) for bullet in self.bullets]
 
     def update(self):
         [self.bullets.remove(bullet) for bullet in self.bullets if bullet.rect.collidelist(self.tiles) != -1]
