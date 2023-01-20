@@ -25,6 +25,7 @@ _map = [
 class World:
     def __init__(self):
         self.tiles = []
+        self.bullets = []
         self._parse_map()
 
     def _parse_map(self):
@@ -38,11 +39,11 @@ class World:
         def collide(target: pg.Rect, offset: vec) -> vec:
             if not offset: return vec()
             # horizontal
-            if target.move(offset.x, 0).collidelist(self.tiles):
+            if target.move(offset.x, 0).collidelist(self.tiles) != -1:
                 new_offset = vec(offset.x - 1 if offset.x > 0 else offset.x + 1, offset.y)
                 return collide(target, new_offset)
             # vertical
-            if target.move(0, offset.y).collidelist(self.tiles):
+            if target.move(0, offset.y).collidelist(self.tiles) != -1:
                 new_offset = vec(offset.x, offset.y - 1 if offset.y > 0 else offset.y + 1)
                 return collide(target, new_offset)
             return offset
@@ -51,9 +52,12 @@ class World:
 
     def offset(self, offset: vec):
         [rect.move_ip(offset) for rect in self.tiles]
+        [bullet.rect.move_ip(offset) for bullet in self.bullets]
 
     def update(self):
-        pass
+        [self.bullets.remove(bullet) for bullet in self.bullets if bullet.rect.collidelist(self.tiles) != -1]
+        [bullet.update() for bullet in self.bullets]
 
     def draw(self, sc: pg.Surface):
         [pg.draw.rect(sc, 'gray', rect, 1) for rect in self.tiles]
+        [bullet.draw(sc) for bullet in self.bullets]
