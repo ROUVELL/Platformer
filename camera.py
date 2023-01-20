@@ -24,13 +24,13 @@ class Camera:
             oy = camera.top - player.top
         elif camera.bottom < player.bottom:
             oy = camera.bottom - player.bottom
-        return pg.Vector2(ox, oy)
+        return vec(ox, oy)
 
     def update(self):
         if not self.rect.contains(self.target.rect):
             offset = self.get_offset()
 
-            self.target.rect.move_ip(offset)
+            self.target.move(offset)
             self.world.offset(offset)
 
     def draw(self, sc: pg.Surface):
