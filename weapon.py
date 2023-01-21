@@ -32,6 +32,9 @@ class Weapon:
 
     def shot(self):
         if self._shot_timer and self._reload_timer:
+            if not self.curr_bullets:
+                self.reload()
+                return
             self.curr_bullets -= 1
             self._shot_timer.activate()
             self._bullet_group.append(self.bullet(self._bullet_group, vec(self.rect.center), self._get_direction()))
@@ -50,7 +53,7 @@ class Weapon:
     def update(self):
         self._shot_timer.update()
         self._reload_timer.update()
-        if self.reloading or not self.curr_bullets:
+        if self.reloading:
             self.reload()
 
     def draw(self, sc: pg.Surface):
