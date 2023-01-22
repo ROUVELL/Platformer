@@ -35,7 +35,7 @@ class Player:
         keys = pressed_keys()
         if keys[pg.K_a]: self.direction.x = -self.speed
         if keys[pg.K_d]: self.direction.x = self.speed
-        if keys[pg.K_SPACE] and self._jump_timer:
+        if keys[pg.K_SPACE] and self._jump_timer and self.direction.y <= 1:
             self._jump_timer.activate()
             self.direction.y = -JUMP_POWER
         if keys[pg.K_r]:
