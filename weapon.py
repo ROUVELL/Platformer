@@ -53,7 +53,7 @@ class Weapon:
     def update(self):
         self._shot_timer.update()
         self._reload_timer.update()
-        if self.reloading:
+        if self.reloading or not self.curr_bullets:
             self.reload()
 
     def draw(self, sc: pg.Surface):
